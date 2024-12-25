@@ -17,10 +17,10 @@ export default function Header2() {
             <Link href="/">Home</Link>
           </li>
           <li className="hover:text-gray-700">
-            <Link href="/shop">Product</Link>
+            <Link href="/product">Product</Link>
           </li>
           <li className="hover:text-gray-700">
-            <Link href="/blog">Pricing</Link>
+            <Link href="/pricing">Pricing</Link>
           </li>
           <li className="hover:text-gray-700">
             <Link href="/contact">Contact</Link>
