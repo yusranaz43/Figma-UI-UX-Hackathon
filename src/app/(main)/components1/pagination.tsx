@@ -20,7 +20,7 @@ export default function Pagination() {
 
   return (
     <section className="flex justify-center py-[-4px] mb-14">
-      <div className="flex border border-customGrey rounded-lg overflow-hidden w-[313px] h-[74px]">
+      <div className="flex border border-customGrey rounded-lg overflow-hidden w-[189px] h-[50px] md:w-[313px]">
         <ul className="flex items-center justify-between w-full">
           {/* First Page */}
           <li className="flex-1 border-r border-customGrey">

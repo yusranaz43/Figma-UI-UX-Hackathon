@@ -9,7 +9,7 @@ export default function Footer1() {
     <footer className="pt-7 align-middle">
       <div className="max-w-screen-xl mx-auto">
         {/* Top Section */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-start lg:justify-between px-6 lg:px-48">
+        <div className="flex flex-col lg:flex-row items-start lg:items-start lg:justify-between px-6 lg:px-36">
           <h3 className="text-customBlue text-xl font-bold mb-4 lg:mb-0">Bandage</h3>
           <div className="space-x-3 text-xl">
             <a href="/">
@@ -27,7 +27,7 @@ export default function Footer1() {
         <hr className="my-6 mx-6 lg:mx-48 border-gray-300" />
 
         {/* Grid Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-6 lg:px-48 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-6 lg:px-36 py-6">
           {/* Company Info */}
           <div>
             <h5 className="font-bold text-sm text-customBlue">Company Info</h5>
@@ -93,7 +93,7 @@ export default function Footer1() {
         </div>
 
         {/* Bottom Section */}
-        <div className="text-xs text-gray-700 text-center lg:text-start px-6 lg:px-48 py-7">
+        <div className="text-xs text-gray-700 text-center lg:text-start px-6 lg:px-36 py-7">
           <p>
             Made With Love By
             <br className="block lg:hidden" />

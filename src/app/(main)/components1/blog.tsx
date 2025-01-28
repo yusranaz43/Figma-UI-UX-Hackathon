@@ -13,7 +13,7 @@ const featuredPosts = [
   },
   {
     id: 2,
-    image: "/images/featuredpost2.png", 
+    image: "/images/featuredpost2.png",
     title: "Loudest à la Madison #1 (L'integral)",
     description:
       "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
@@ -33,13 +33,12 @@ const featuredPosts = [
 
 export default function Blog() {
   return (
-    <section className="w-full h-auto py-10 my-10 max-w-[1200px] mx-auto">
-     
+    <section className="w-full h-auto py-10 my-10 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-10">
         <h6 className="pb-2 text-cSky font-bold text-[14px] leading-[24px] tracking-[0.2px]">
           Practice Advice
         </h6>
-        <h2 className="text-cBlue font-bold text-[40px] leading-[50px] tracking-[0.2px] mb-3">
+        <h2 className="text-cBlue font-bold text-[30px] sm:text-[40px] leading-[40px] sm:leading-[50px] tracking-[0.2px] mb-3">
           Featured Posts
         </h2>
         <p className="text-customGrey2 font-normal text-[14px] leading-[20px] tracking-[0.2px] mx-auto max-w-[469px]">
@@ -47,13 +46,11 @@ export default function Blog() {
         </p>
       </div>
 
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-16 ml-16 max-w-[1200px] mt-16 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-5 lg:mx-16">
         {featuredPosts.map((post) => (
           <div
             key={post.id}
-            className="relative w-[348px] h-auto bg-white shadow-md mx-auto">
-        
+            className="relative w-full max-w-[320px] sm:max-w-[340px] lg:max-w-[348px] h-auto bg-white shadow-md mx-auto">
             <div className="relative">
               <Image
                 src={post.image}
@@ -67,17 +64,16 @@ export default function Blog() {
               </div>
             </div>
 
-            
-            <div className="p-5">
+            <div className="p-4 sm:p-5">
               <h5 className="mb-2 text-[12px] font-semibold">
                 <span className="mr-3 text-cLightSky">Google</span>
                 <span className="mr-5 text-customGrey2">Trending</span>
                 <span className="text-customGrey2">New</span>
               </h5>
-              <h4 className="text-cBlue font-bold text-[20px] leading-[30px] mb-2">
+              <h4 className="text-cBlue font-bold text-[18px] sm:text-[20px] leading-[28px] sm:leading-[30px] mb-2">
                 {post.title}
               </h4>
-              <p className="text-customGrey2 text-[14px] leading-[20px] mb-4">
+              <p className="text-customGrey2 text-[13px] sm:text-[14px] leading-[20px] mb-4">
                 {post.description}
               </p>
               <div className="flex items-center text-customGrey2 text-[12px] my-4">
@@ -88,7 +84,7 @@ export default function Blog() {
                   height={13.14}
                   className="ml-0.1 mr-1.5"
                 />
-                <p className="mr-[114px]">{post.date}</p>
+                <p className="mr-auto">{post.date}</p>
 
                 <Image
                   src="/images/comment.png"

@@ -35,40 +35,51 @@ export default function ProductCard({ pageType = "home" }) {
       {/* Render headings only if the pageType is 'home' */}
       {pageType === "home" && (
         <div className="pt-8">
-          <div className="text-center flex flex-col items-center">
-            <h2 className="pb-2.5 text-customGrey2 font-normal text-[20px] leading-[30px] tracking-[0.2px] w-[191px] h-[30px]">
-              Featured Products
-            </h2>
-            <h3 className="pb-2.5 text-cBlue font-bold text-[24px] leading-[34px] tracking-[0.1px] w-[299px] h-[32px]">
-              BESTSELLER PRODUCTS
-            </h3>
-            <p className="pt-2.5 text-customGrey2 font-normal text-[14px] leading-[20px] tracking-[0.2px] w-[347px] h-[20px]">
-              Problems trying to resolve the conflict between
-            </p>
-          </div>
+        <div className="text-center flex flex-col items-center">
+          <h2 className="pb-2.5 text-customGrey2 font-normal text-[18px] sm:text-[20px] leading-[28px] sm:leading-[30px] tracking-[0.2px] w-full sm:w-[90%] md:w-[80%] white-space-normal">
+            Featured Products
+          </h2>
+          <h3 className="pb-2.5 text-cBlue font-bold text-[22px] sm:text-[24px] leading-[32px] sm:leading-[34px] tracking-[0.1px] w-full sm:w-[90%] md:w-[80%] white-space-normal">
+            BESTSELLER PRODUCTS
+          </h3>
+          <p className="pt-2.5 text-customGrey2 font-normal text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] tracking-[0.2px] w-full sm:w-[90%] md:w-[80%]">
+            Problems trying to resolve the conflict between
+          </p>
         </div>
+      </div>
+      
+      
       )}
 
-      <div className="px-32 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-20 max-w-[1200px] mx-auto">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-32 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-20 max-w-[1200px] mx-auto">
         {products.map((product, index) => (
-          <div key={product.id} className={`text-center flex flex-col items-center ${index >= 4 ? "mt-8" : ""}`}>
-            <Image src={product.image} alt={product.title} width={183} height={238} />
+          <div
+            key={product.id}
+            className={`text-center flex flex-col items-center shadow-lg rounded-lg p-4 sm:p-6 ${index >= 4 ? "mt-8" : ""}`}
+          >
+            <Image
+              src={product.image}
+              alt={product.title}
+              width={250}
+              height={330}
+              className="w-full max-w-[200px] sm:max-w-[250px] object-cover"
+            />
             <div className="pt-5">
-              <h5 className="font-bold pb-2">{product.title}</h5>
-              <Link href="/" className="font-bold text-gray-500">
+              <h5 className="font-bold pb-2 text-[14px] sm:text-[16px]">{product.title}</h5>
+              <Link href="/" className="font-bold text-gray-500 text-[12px] sm:text-[14px]">
                 {product.department}
               </Link>
-              <h5 className="text-gray-400 font-semibold pt-2">
+              <h5 className="text-gray-400 font-semibold pt-2 text-[12px] sm:text-[14px]">
                 {product.price}{" "}
                 <span className="text-green-700 font-semibold">{product.discountedPrice}</span>
               </h5>
             </div>
 
             <div className="flex gap-2 pt-4">
-              <div className="w-[16px] h-[16px] rounded-full bg-cSky"></div>
-              <div className="w-[16px] h-[16px] rounded-full bg-cGreen"></div>
-              <div className="w-[16px] h-[16px] rounded-full bg-cOrange"></div>
-              <div className="w-[16px] h-[16px] rounded-full bg-cBlue"></div>
+              <div className="w-[12px] sm:w-[16px] h-[12px] sm:h-[16px] rounded-full bg-cSky"></div>
+              <div className="w-[12px] sm:w-[16px] h-[12px] sm:h-[16px] rounded-full bg-cGreen"></div>
+              <div className="w-[12px] sm:w-[16px] h-[12px] sm:h-[16px] rounded-full bg-cOrange"></div>
+              <div className="w-[12px] sm:w-[16px] h-[12px] sm:h-[16px] rounded-full bg-cBlue"></div>
             </div>
           </div>
         ))}

@@ -11,7 +11,7 @@ export default function Shop(){
             <Filter/>
             <section>
                {/* Clients Logos Section */}
-                       <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-8 pt-8 px-4 sm:px-8 lg:px-12">
+                       <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-8 pt-8 px-4 sm:px-8 lg:px-20">
                          <Image
                            src="/images/Vector.png"
                            alt="Client partner1"
