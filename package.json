@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "node scripts/migrate.mjs"
+    "migrate": "node scripts/migrate.mjs",
+    "delete": "node scripts/delete.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -19,10 +20,11 @@
     "@sanity/client": "^6.25.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.70.0",
-    "next": "^14.2.23",
+    "dotenv": "^16.4.7",
+    "next": "^15.1.6",
     "next-sanity": "^9.8.38",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sanity": "^3.70.0",
     "styled-components": "^6.1.14"
   },
