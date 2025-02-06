@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../globals.css";
-import "../lib/fontawesome"
+import "../lib/fontawesome";
 import Header1 from "./components1/header1";
 import StickyBar from "./components1/stickybar";
 import Footer1 from "./components1/footer1";
+import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -24,22 +26,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        
-        <StickyBar/>
-        <Header1/>
-        <main>
-        {children}
-        </main>
-        <Footer1/>
-      </body>
-    </html>
+    <CartProvider>
+      <WishlistProvider>
+        <html lang="en">
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <StickyBar />
+            <Header1 />
+            <main>{children}</main>
+            <Footer1 />
+          </body>
+        </html>
+      </WishlistProvider>
+    </CartProvider>
   );
 }

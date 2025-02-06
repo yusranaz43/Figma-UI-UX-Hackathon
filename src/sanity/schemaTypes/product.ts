@@ -59,5 +59,21 @@ export const product = defineType({
       type: "boolean",
       description: "Indicates if the product is available for sale",
     },
+    {
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title", 
+        maxLength: 200,
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "ratings",
+      title: "Ratings",
+      type: "number",
+      validation: (Rule) => Rule.min(1).max(5).error("Ratings must be between 1 and 5"),
+    },
   ],
 });

@@ -21,3 +21,27 @@ const builder = imageUrlBuilder(client)
 export function urlFor(source: SanityImageSource) {
   return builder.image(source) // This will generate the image URL
 }
+
+// Fetch products from Sanity.
+// For "home", return the first 8 products.
+// For "shop", skip the first 8 so that home products aren’t repeated.
+export async function fetchProducts(pageType: string) {
+  const data = await client.fetch(`*[_type == "products"]{
+    _id,
+    title,
+    originalPrice,
+    discountedPrice,
+    image,
+    description,
+    inventory,
+    ratings,
+    colors,
+    slug { current }
+  }`);
+
+  if (pageType === "home") {
+    return data.slice(0, 8); // First 8 products for home page.
+  } else {
+    return data.slice(8); // Skip the first 8 products for shop page.
+  }
+}

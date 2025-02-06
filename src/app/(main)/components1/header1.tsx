@@ -4,9 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faSearch, faShoppingCart, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Header1() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cart } = useCart();  // Access cart state from context
+  const { wishlist } = useWishlist();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -59,19 +63,23 @@ export default function Header1() {
             <span className="px-1">/</span>
             <Link href="/register" className="font-bold">Register</Link>
           </div>
-          <a href="#" className="hover:text-gray-700">
+          <a href="/search" className="hover:text-gray-700">
             <FontAwesomeIcon icon={faSearch} />
           </a>
           <div className="relative">
-            <a href="#" className="hover:text-gray-700">
+            <a href="/cart" className="hover:text-gray-700">
               <FontAwesomeIcon icon={faShoppingCart} />
-              <span className="absolute top-[6px] text-sm">1</span>
+              <span className="absolute top-[6px] text-sm">
+              {cart.length}
+              </span>
             </a>
           </div>
           <div className="relative">
-            <a href="#" className="hover:text-gray-700">
+            <a href="/wishlist" className="hover:text-gray-700">
               <FontAwesomeIcon icon={faHeart} />
-              <span className="absolute top-[6px] text-sm">1</span>
+              <span className="absolute top-[6px] text-sm">
+              {wishlist.length}
+              </span>
             </a>
           </div>
         </div>
@@ -108,19 +116,23 @@ export default function Header1() {
                 <span className="px-1">/</span>
                 <Link href="/register" className="font-bold">Register</Link>
               </div>
-              <a href="#" className="hover:text-gray-700">
+              <a href="/search" className="hover:text-gray-700">
                 <FontAwesomeIcon icon={faSearch} />
               </a>
               <div className="relative">
-                <a href="#" className="hover:text-gray-700">
+                <a href="/cart" className="hover:text-gray-700">
                   <FontAwesomeIcon icon={faShoppingCart} />
-                  <span className="absolute top-[6px] text-sm">1</span>
+                  <span className="absolute top-[6px] text-sm">
+                  {cart.length}
+                  </span>
                 </a>
               </div>
               <div className="relative">
-                <a href="#" className="hover:text-gray-700">
+                <a href="/wishlist" className="hover:text-gray-700">
                   <FontAwesomeIcon icon={faHeart} />
-                  <span className="absolute top-[6px] text-sm">1</span>
+                  <span className="absolute top-[6px] text-sm">
+                  {wishlist.length}
+                  </span>
                 </a>
               </div>
             </div>

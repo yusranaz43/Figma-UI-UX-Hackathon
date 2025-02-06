@@ -40,6 +40,14 @@ async function uploadImageToSanity(imageUrl) {
   }
 }
 
+// Function to generate slug for categories
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^\w\-]+/g, ""); // Remove any non-word characters
+}
+
 // Main function to migrate data from REST API to Sanity
 async function migrateData() {
   console.log("Starting data migration...");
@@ -60,12 +68,20 @@ async function migrateData() {
     // Migrate categories
     for (const category of categoriesData) {
       console.log(`Migrating category: ${category.title}`);
+
+      // Generate slug for category if it doesn't exist
+      const slug = generateSlug(category.title);
+
       const imageId = await uploadImageToSanity(category.imageUrl);
 
       const newCategory = {
         _id: category._id,
         _type: "categories",
         title: category.title,
+        slug: {
+          _type: "slug",
+          current: slug, // Use the generated slug
+        },
         image: imageId ? { _type: "image", asset: { _ref: imageId } } : undefined,
       };
 
@@ -84,6 +100,12 @@ async function migrateData() {
         title: product.title,
         originalPrice: product.originalPrice,
         discountedPrice: product.discountedPrice,
+        slug: {
+          _type: "slug",
+          current: product.slug || (product.title ? product.title.toLowerCase().replace(/\s+/g, "-") : "no-title"),
+        },
+        description: product.description || "",  
+        ratings: product.ratings || 0,  
         inventory: product.inventory,
         colors: product.colors,
         image: imageId ? { _type: "image", asset: { _ref: imageId } } : undefined,

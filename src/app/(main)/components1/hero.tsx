@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -16,9 +17,11 @@ export default function Hero() {
           <h4 className="text-white font-normal text-[14px] sm:text-[18px] lg:text-[20px] leading-[20px] sm:leading-[28px] lg:leading-[30px] tracking-[0.2px] mt-4 sm:mt-6">
             We know how large objects will act, but things on a small scale.
           </h4>
+          <Link href="/shop">
           <button className="bg-customButtonHero2 text-white font-bold w-[120px] sm:w-[140px] lg:w-[163px] h-[40px] sm:h-[45px] lg:h-[47px] rounded-[5px] mt-8 sm:mt-10">
             SHOP NOW
           </button>
+          </Link>
         </div>
 
         {/* Background Image */}

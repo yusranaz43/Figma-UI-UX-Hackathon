@@ -1,17 +1,22 @@
 import Cards from "../components1/cards";
 import Filter from "../components1/filter";
-import Pagination from "../components1/pagination";
-import ProductCard from "../components1/productscard";
 import Image from "next/image";
+import { fetchProducts } from "@/sanity/lib/client";
+import ShopProducts from "../components1/shopproduct";
 
-export default function Shop(){
+export default async function Shop(){
+
+  // Fetch products for shop page (skipping the first 8)
+  const products = await fetchProducts("shop");
+
     return(
         <main>
             <Cards/>
             <Filter/>
+            <ShopProducts products={products} />
             <section>
                {/* Clients Logos Section */}
-                       <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-8 pt-8 px-4 sm:px-8 lg:px-20">
+                       <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-8 pt-8 mb-11 px-4 sm:px-8 lg:px-20">
                          <Image
                            src="/images/Vector.png"
                            alt="Client partner1"
@@ -50,8 +55,6 @@ export default function Shop(){
                          />
                        </div>
             </section>
-            <ProductCard pageType="shop" />
-            <Pagination/>
         </main>
     )
 }

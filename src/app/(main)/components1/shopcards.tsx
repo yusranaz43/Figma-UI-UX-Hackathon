@@ -1,10 +1,12 @@
 import { client, urlFor } from "@/sanity/lib/client"; 
 import Image from "next/image";
+import Link from "next/link"; 
 
 // Category type
 interface Category {
   _id: string;
   title: string;
+  slug: { current: string }; // Slug added for dynamic routing
   image: { asset: { _ref: string } }; // Image reference from Sanity
 }
 
@@ -13,6 +15,7 @@ async function fetchCategories(): Promise<Category[]> {
   return await client.fetch(`*[_type == "categories"]{
     _id,
     title,
+    slug,  // Fetch the slug for dynamic routing
     image
   }`);
 }
@@ -32,73 +35,82 @@ export default async function ShopCards() {
       </div>
 
       <div className="flex flex-wrap md:flex-nowrap w-full justify-center gap-4 mt-8">
-        {/* First Image */}
-        <div className="relative w-full md:w-[509px] h-[300px] md:h-[500px]">
-          {categories[0]?.image && categories[0].image.asset._ref && (
-            <Image
-              src={urlFor(categories[0].image.asset._ref).width(509).height(500).url()}
-              alt="First Image"
-              width={509}
-              height={500}
-              className="w-full h-full object-cover"
-            />
-          )}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[170px] h-[48px] px-4 py-2 shadow-md text-center">
-            MEN
+        {/* First Image - MEN */}
+        <Link href={`/categories/${categories[0]?.slug?.current}`} passHref>
+          <div className="relative w-full md:w-[509px] h-[300px] md:h-[500px] cursor-pointer">
+            {categories[0]?.image && categories[0].image.asset._ref && (
+              <Image
+                src={urlFor(categories[0].image.asset._ref).width(509).height(500).url()}
+                alt="First Image"
+                width={509}
+                height={500}
+                className="w-full h-full object-cover"
+              />
+            )}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[170px] h-[48px] px-4 py-2 shadow-md text-center">
+              MEN
+            </div>
           </div>
-        </div>
+        </Link>
 
-        {/* Second Image */}
-        <div className="relative w-full md:w-[239px] h-[300px] md:h-[500px]">
-          {categories[1]?.image && categories[1].image.asset._ref && (
-            <Image
-              src={urlFor(categories[1].image.asset._ref).width(239).height(500).url()}
-              alt="Second Image"
-              width={239}
-              height={500}
-              className="w-full h-full object-cover"
-            />
-          )}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[136px] h-[48px] px-4 py-2 shadow-md text-center">
-            WOMEN
+        {/* Second Image - WOMEN */}
+        <Link href={`/categories/${categories[1]?.slug?.current}`} passHref>
+          <div className="relative w-full md:w-[239px] h-[300px] md:h-[500px] cursor-pointer">
+            {categories[1]?.image && categories[1].image.asset._ref && (
+              <Image
+                src={urlFor(categories[1].image.asset._ref).width(239).height(500).url()}
+                alt="Second Image"
+                width={239}
+                height={500}
+                className="w-full h-full object-cover"
+              />
+            )}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[136px] h-[48px] px-4 py-2 shadow-md text-center">
+              WOMEN
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Third and Fourth Images */}
         <div className="flex flex-col gap-4 w-full md:w-[239px]">
-          {/* Third Image */}
-          <div className="relative w-full h-[150px] md:h-[242px]">
-            {categories[2]?.image && categories[2].image.asset._ref && (
-              <Image
-                src={urlFor(categories[2].image.asset._ref).width(239).height(242).url()}
-                alt="Third Image"
-                width={239}
-                height={242}
-                className="w-full h-full object-cover"
-              />
-            )}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[120px] h-[48px] px-4 py-2 shadow-md text-center">
-              ACCESSORIES
+          {/* Third Image - ACCESSORIES */}
+          <Link href={`/categories/${categories[2]?.slug?.current}`} passHref>
+            <div className="relative w-full h-[150px] md:h-[242px] cursor-pointer">
+              {categories[2]?.image && categories[2].image.asset._ref && (
+                <Image
+                  src={urlFor(categories[2].image.asset._ref).width(239).height(242).url()}
+                  alt="Third Image"
+                  width={239}
+                  height={242}
+                  className="w-full h-full object-cover"
+                />
+              )}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[120px] h-[48px] px-4 py-2 shadow-md text-center">
+                ACCESSORIES
+              </div>
             </div>
-          </div>
+          </Link>
 
-          {/* Fourth Image */}
-          <div className="relative w-full h-[150px] md:h-[242px]">
-            {categories[3]?.image && categories[3].image.asset._ref && (
-              <Image
-                src={urlFor(categories[3].image.asset._ref).width(239).height(242).url()}
-                alt="Fourth Image"
-                width={239}
-                height={242}
-                className="w-full h-full object-cover"
-              />
-            )}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[120px] h-[48px] px-4 py-2 shadow-md text-center">
-              KIDS
+          {/* Fourth Image - KIDS */}
+          <Link href={`/categories/${categories[3]?.slug?.current}`} passHref>
+            <div className="relative w-full h-[150px] md:h-[242px] cursor-pointer">
+              {categories[3]?.image && categories[3].image.asset._ref && (
+                <Image
+                  src={urlFor(categories[3].image.asset._ref).width(239).height(242).url()}
+                  alt="Fourth Image"
+                  width={239}
+                  height={242}
+                  className="w-full h-full object-cover"
+                />
+              )}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black w-[120px] h-[48px] px-4 py-2 shadow-md text-center">
+                KIDS
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
   );
 }
+

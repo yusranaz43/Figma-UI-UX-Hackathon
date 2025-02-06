@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Filter() {
   return (
-    <section className="w-full bg-white py-16 border px-4 sm:px-6 lg:px-[109px]">
+    <section className="w-full bg-white py-14 border px-4 sm:px-6 lg:px-[109px]">
       <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
         
         {/* Showing Results */}
