@@ -4,11 +4,11 @@ import { client } from "@/sanity/lib/client";
 import { useSearchParams, useRouter } from "next/navigation";
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
-import Link from "next/link";  // Import Link for navigation
+import Link from "next/link"; // Import Link for navigation
 
 // Sanity image URL builder
 const builder = imageUrlBuilder(client);
-const urlFor = (source: string) => builder.image(source).url(); // Removed .width() and .height() here
+const urlFor = (source: string) => builder.image(source).url();
 
 // Product type definition
 interface Product {
@@ -19,30 +19,28 @@ interface Product {
   discountedPrice: number;
   description?: string;
   rating?: number;
-  slug: { current: string }; // Add slug for URL
+  slug: { current: string };
 }
 
-// API call to fetch products
+// Function to fetch products
 const fetchProducts = async (query: string, minPrice?: number, maxPrice?: number): Promise<Product[]> => {
   if (!query.trim()) return []; // Avoid empty query
 
-  let filter = `*[_type == "products" && title match "${query}*"`;
-
-  if (minPrice) {
-    filter += ` && discountedPrice >= ${minPrice}`;
-  }
-  if (maxPrice) {
-    filter += ` && discountedPrice <= ${maxPrice}`;
-  }
-
-  filter += `]{
+  // Correct Sanity query using parameters
+  const sanityQuery = `*[_type == "products" && title match $query && discountedPrice >= $minPrice && discountedPrice <= $maxPrice]{
     _id, title, image, originalPrice, discountedPrice, description, rating, slug
   }`;
 
-  console.log("Sanity Query:", filter);
+  const params: { [key: string]: any } = {
+    query: `${query}*`, // Wildcard search
+    minPrice: minPrice ?? 0, // Default min price
+    maxPrice: maxPrice ?? 100000, // Large default max price
+  };
+
+  console.log("Sanity Query:", sanityQuery, "Params:", params);
 
   try {
-    const results = await client.fetch(filter);
+    const results = await client.fetch(sanityQuery, params);
     console.log("Fetched products:", results);
     return results;
   } catch (error) {
@@ -81,7 +79,9 @@ const SearchPage = () => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
-    router.push(`/search?query=${newQuery}`, { scroll: false });
+
+    // Fix: Corrected the router.push syntax
+    router.push(`/search?query=${encodeURIComponent(newQuery)}`, { scroll: false });
   };
 
   return (
@@ -89,47 +89,57 @@ const SearchPage = () => {
       <h1 className="text-xl font-semibold mb-6 text-cBlue text-center mt-9">Search Products</h1>
 
       {/* Search Input */}
-      <input
-        type="text"
-        value={query}
-        onChange={handleSearch}
-        placeholder="Search for products..."
-        className="w-[980px] px-4 py-2 border rounded-md mb-4 mx-28"
-      />
-
-      {/* Price Range Filter */}
-      <div className="flex gap-2 items-center mt-2 mb-6 justify-center">
-        <label>Min Price:</label>
+      <div className="flex justify-center mb-4">
         <input
-          type="number"
-          value={minPrice}
-          onChange={(e) => setMinPrice(Number(e.target.value))}
-          className="w-20 border px-2 py-1"
-        />
-        <label>Max Price:</label>
-        <input
-          type="number"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-20 border px-2 py-1"
+          type="text"
+          value={query}
+          onChange={handleSearch}
+          placeholder="Search for products..."
+          className="w-full max-w-lg px-4 py-2 text-customBlue border rounded-md mb-4 mx-4 border-customGrey focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
       </div>
 
+      {/* Price Range Filter */}
+<div className="flex flex-wrap gap-2 items-center mt-2 mb-6 justify-center">
+  {/* Min Price */}
+  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+    <label className="text-cBlue">Min Price:</label>
+    <input
+      type="number"
+      value={minPrice}
+      onChange={(e) => setMinPrice(Number(e.target.value))}
+      className="w-full sm:w-20 border px-2 py-1 text-cBlue text-center mt-2 sm:mt-0"
+    />
+  </div>
+
+  {/* Max Price */}
+  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mt-2 sm:mt-0">
+    <label className="text-cBlue">Max Price:</label>
+    <input
+      type="number"
+      value={maxPrice}
+      onChange={(e) => setMaxPrice(Number(e.target.value))}
+      className="w-full sm:w-20 border px-2 py-1 text-cBlue text-center"
+    />
+  </div>
+</div>
+
+
       {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-28">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4 sm:mx-8 lg:mx-28">
         {loading ? (
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product) => (
             <Link
               key={product._id}
-              href={`/products/${product.slug.current}`} // Add link to product page
+              href={`/products/${product.slug.current}`} // Fix: Corrected the Link format
               className="text-center flex flex-col items-center shadow-2xl transition-transform duration-300 hover:scale-105 rounded-lg p-4 sm:p-6"
             >
               {/* Product Image */}
               {product.image && product.image.asset?._ref ? (
                 <Image
-                  src={urlFor(product.image.asset._ref)} // Use urlFor function to get the image URL
+                  src={urlFor(product.image.asset._ref)} // Fix: Corrected the image URL fetching
                   alt={product.title}
                   width={183}
                   height={238}
@@ -147,8 +157,8 @@ const SearchPage = () => {
                   {product.title}
                 </h5>
                 <h5 className="text-gray-400 font-semibold pt-2 text-[12px] sm:text-[14px]">
-                  <span className="text-gray-500 line-through">{`$${product.originalPrice}`}</span>{" "}
-                  <span className="text-green-700 font-semibold">{`$${product.discountedPrice}`}</span>
+                  <span className="text-gray-500 line-through">₨{product.originalPrice}</span>{" "}
+                  <span className="text-green-700 font-semibold">₨{product.discountedPrice}</span>
                 </h5>
               </div>
 
