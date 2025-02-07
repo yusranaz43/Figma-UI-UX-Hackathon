@@ -31,7 +31,7 @@ const fetchProducts = async (query: string, minPrice?: number, maxPrice?: number
     _id, title, image, originalPrice, discountedPrice, description, rating, slug
   }`;
 
-  const params: { [key: string]: any } = {
+  const params: { [key: string]: string | number } = {
     query: `${query}*`, // Wildcard search
     minPrice: minPrice ?? 0, // Default min price
     maxPrice: maxPrice ?? 100000, // Large default max price
