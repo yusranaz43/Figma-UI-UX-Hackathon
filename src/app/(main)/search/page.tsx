@@ -1,15 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { client } from "@/sanity/lib/client";
 import { useSearchParams, useRouter } from "next/navigation";
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
+import Link from "next/link";  // Import Link for navigation
 
 // Sanity image URL builder
 const builder = imageUrlBuilder(client);
-const urlFor = (source: string) => builder.image(source).url();  // Remove .width() and .height() here
+const urlFor = (source: string) => builder.image(source).url(); // Removed .width() and .height() here
 
-// Product ka type define kiya
+// Product type definition
 interface Product {
   _id: string;
   title: string;
@@ -18,17 +19,15 @@ interface Product {
   discountedPrice: number;
   description?: string;
   rating?: number;
-  slug: { current: string };
+  slug: { current: string }; // Add slug for URL
 }
 
-// API se products fetch karne ka function
+// API call to fetch products
 const fetchProducts = async (query: string, minPrice?: number, maxPrice?: number): Promise<Product[]> => {
   if (!query.trim()) return []; // Avoid empty query
 
-  // Use match query for search preference
   let filter = `*[_type == "products" && title match "${query}*"`;
 
-  // Add price range filter if provided
   if (minPrice) {
     filter += ` && discountedPrice >= ${minPrice}`;
   }
@@ -40,11 +39,11 @@ const fetchProducts = async (query: string, minPrice?: number, maxPrice?: number
     _id, title, image, originalPrice, discountedPrice, description, rating, slug
   }`;
 
-  console.log("Sanity Query:", filter); // Log the query
+  console.log("Sanity Query:", filter);
 
   try {
     const results = await client.fetch(filter);
-    console.log("Fetched products:", results); // Log the fetched products
+    console.log("Fetched products:", results);
     return results;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -52,6 +51,7 @@ const fetchProducts = async (query: string, minPrice?: number, maxPrice?: number
   }
 };
 
+// SearchPage component
 const SearchPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -67,7 +67,7 @@ const SearchPage = () => {
     const fetchFilteredProducts = async () => {
       setLoading(true);
       const results = await fetchProducts(query, minPrice, maxPrice);
-      setProducts(results || []); // Ensuring it's always an array
+      setProducts(results || []);
       setLoading(false);
     };
 
@@ -121,13 +121,19 @@ const SearchPage = () => {
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product) => (
-            <div key={product._id} className="text-center flex flex-col items-center shadow-2xl transition-transform duration-300 hover:scale-105 rounded-lg p-4 sm:p-6">
+            <Link
+              key={product._id}
+              href={`/products/${product.slug.current}`} // Add link to product page
+              className="text-center flex flex-col items-center shadow-2xl transition-transform duration-300 hover:scale-105 rounded-lg p-4 sm:p-6"
+            >
               {/* Product Image */}
               {product.image && product.image.asset?._ref ? (
                 <Image
                   src={urlFor(product.image.asset._ref)} // Use urlFor function to get the image URL
                   alt={product.title}
-                  className="w-full h-[250px] object-cover"  // Ensure the image has fixed height and width
+                  width={183}
+                  height={238}
+                  className="w-full h-[250px] object-cover"
                 />
               ) : (
                 <div className="w-full h-[250px] bg-gray-200 flex items-center justify-center">
@@ -147,13 +153,13 @@ const SearchPage = () => {
               </div>
 
               {/* Color Options */}
-        <div className="flex gap-2 pt-4">
-          <div className="w-[12px] h-[12px] rounded-full bg-cSky"></div>
-          <div className="w-[12px] h-[12px] rounded-full bg-cGreen"></div>
-          <div className="w-[12px] h-[12px] rounded-full bg-cOrange"></div>
-          <div className="w-[12px] h-[12px] rounded-full bg-cBlue"></div>
-        </div>
-            </div>
+              <div className="flex gap-2 pt-4">
+                <div className="w-[12px] h-[12px] rounded-full bg-cSky"></div>
+                <div className="w-[12px] h-[12px] rounded-full bg-cGreen"></div>
+                <div className="w-[12px] h-[12px] rounded-full bg-cOrange"></div>
+                <div className="w-[12px] h-[12px] rounded-full bg-cBlue"></div>
+              </div>
+            </Link>
           ))
         ) : (
           <p>No products found.</p>
@@ -163,4 +169,11 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+// Wrap the SearchPage in Suspense
+const SearchPageWithSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <SearchPage />
+  </Suspense>
+);
+
+export default SearchPageWithSuspense;

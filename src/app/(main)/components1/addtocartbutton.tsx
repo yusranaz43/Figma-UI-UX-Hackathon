@@ -1,20 +1,7 @@
 "use client";
 import { IoCartOutline } from "react-icons/io5";
-import { useCart } from "../context/CartContext"; 
-
-
-// Define the type for product
-interface Product {
-  title: string;
-  image: { asset: { _ref: string } };
-  originalPrice: number;
-  discountedPrice: number;
-  description?: string;
-  inventory: number;
-  ratings?: number;
-  colors: string[];
-  slug: { current: string };
-}
+import { useCart } from "../context/CartContext";
+import { Product} from "../../../../type";
 
 interface AddToCartButtonProps {
   product: Product;
@@ -25,23 +12,22 @@ interface AddToCartButtonProps {
 }
 
 const AddToCartButton = ({ product, selectedColor, selectedSize, quantity }: AddToCartButtonProps) => {
-  const { addToCart } = useCart(); // Access the addToCart function from context
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
-      alert('Please select both color and size.');
+      alert("Please select both color and size.");
       return;
     }
 
-    // Add the product to the cart with the selected color, size, and quantity
-    const cartProduct = {
+    const cartItem = {
       ...product,
       selectedColor,
       selectedSize,
       quantity,
     };
 
-    addToCart(cartProduct);
+    addToCart(cartItem); // Ensure item is added to cart context properly
   };
 
   return (
@@ -54,5 +40,6 @@ const AddToCartButton = ({ product, selectedColor, selectedSize, quantity }: Add
     </button>
   );
 };
+
 
 export default AddToCartButton;

@@ -48,6 +48,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
       selectedColor,
       selectedSize,
       quantity,
+      toFixed: (arg0: number) => product.discountedPrice.toFixed(arg0),
     };
 
     addToCart(cartItem); // Product ko cart mein add kar raha hai

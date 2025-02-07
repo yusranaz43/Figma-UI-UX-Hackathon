@@ -1,29 +1,60 @@
-import { notFound } from "next/navigation";
-import CategoryDetails from "../../components1/categorydetails";
-import { client } from "@/sanity/lib/client";
+// app/categories/[slug]/page.tsx
 
-export const dynamicParams = false; // Important for SSG
+import { client } from "@/sanity/lib/client";  // Correct import for the client
+import { notFound } from "next/navigation";  // Correct for handling 404
+import CategoryDetails from "../../components1/categorydetails";  // Assuming CategoryDetails is in the components folder
 
-export async function generateStaticParams() {
-  return []; // Empty array for dynamic routes
+interface IParams {
+  slug: string;  // The dynamic parameter 'slug' from the URL
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const category = await client.fetch(
-    `*[_type == "categories" && slug.current == $slug][0]`,
-    { slug: params.slug }
+// Function to fetch category by its slug
+async function fetchCategoryBySlug(slug: string) {
+  const category = await client.fetch(`
+    *[_type == "categories" && slug.current == $slug][0] {
+      _id,
+      title,
+      image,
+      description
+    }
+  `, { slug });
+
+  return category;
+}
+
+// Function to fetch products for a category using its slug
+async function fetchProductsByCategorySlug(slug: string) {
+  const products = await client.fetch(`
+    *[_type == "products" && category->slug.current == $slug] {
+      _id,
+      title,
+      discountedPrice,
+      originalPrice,
+      image,
+      slug { current }
+    }
+  `, { slug });
+
+  return products;
+}
+
+// Main CategoryPage component that will fetch data and render CategoryDetails
+export default async function CategoryPage({ params }: { params: IParams }) {
+  const { slug } = params;  // Get the slug from the URL params
+
+  // Fetch the category and its associated products
+  const category = await fetchCategoryBySlug(slug);
+  const products = await fetchProductsByCategorySlug(slug);
+
+  // If category doesn't exist, show a 404 page
+  if (!category) {
+    notFound();
+  }
+
+  return (
+    <div>
+      {/* Render CategoryDetails component with the fetched data */}
+      <CategoryDetails category={category} products={products} />
+    </div>
   );
-
-  if (!category) notFound();
-
-  const products = await client.fetch(
-    `*[_type == "products" && category->slug.current == $slug]`,
-    { slug: params.slug }
-  );
-
-  return <CategoryDetails category={category} products={products} />;
 }

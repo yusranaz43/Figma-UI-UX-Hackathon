@@ -1,30 +1,21 @@
 "use client";
+
 import React from "react";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/client";
 import { FaTrashCan } from "react-icons/fa6";
 
-// Define the type for cart items
-interface CartItem {
-  _id: string;
-  title: string;
-  discountedPrice: number;
-  originalPrice?: number;
-  quantity?: number;
-  image?: {
-    asset: {
-      _ref: string;
-    };
-  };
-}
-
 const CartPage: React.FC = () => {
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  const { cart, updateQuantity, removeFromCart } = useCart(); // Use the context
 
-  // Use the CartItem type for item in reduce
+  // Check if cart is undefined, it should never be undefined if the provider is used properly
+  if (cart === undefined) {
+    return <div>Loading...</div>;
+  }
+
   const totalAmount = cart.reduce(
-    (total: number, item: CartItem) => total + item.discountedPrice * (item.quantity || 1),
+    (total, item) => total + item.discountedPrice * (item.quantity || 1),
     0
   );
 
@@ -37,11 +28,10 @@ const CartPage: React.FC = () => {
             <p className="text-gray-500">Your cart is empty.</p>
           ) : (
             <ul>
-              {cart.map((item: CartItem) => (
+              {cart.map((item) => (
                 <li key={item._id} className="flex items-center justify-between border-b py-4">
                   <div className="flex items-center space-x-4">
-                    {/* Display product image */}
-                    {item.image && item.image.asset && item.image.asset._ref ? (
+                    {item.image?.asset?._ref ? (
                       <Image
                         src={urlFor(item.image.asset._ref).width(80).height(80).url()}
                         alt={item.title}
@@ -59,7 +49,6 @@ const CartPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Quantity Controls */}
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => updateQuantity(item._id, Math.max(1, (item.quantity || 1) - 1))}
@@ -83,17 +72,15 @@ const CartPage: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Price and Delete Button Below */}
                   <div className="text-center">
                     <p className="text-lg font-semibold text-cBlue">
-                      ${item.discountedPrice}
+                      ${item.discountedPrice.toFixed(2)}
                     </p>
                     {item.originalPrice && (
                       <p className="text-sm text-gray-500 line-through">
-                        ${item.originalPrice}
+                        ${item.originalPrice.toFixed(2)}
                       </p>
                     )}
-                    {/* Professional Delete Icon */}
                     <button
                       onClick={() => removeFromCart(item._id)}
                       className="text-customGrey2 hover:text-customBlue mt-2 mx-auto flex justify-center"
@@ -107,12 +94,11 @@ const CartPage: React.FC = () => {
           )}
         </div>
 
-        {/* Order Summary */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
           <div className="flex justify-between text-gray-600">
             <span>Subtotal ({cart.length} items)</span>
-            <span>${totalAmount}</span>
+            <span>${totalAmount.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-gray-600 mt-2">
             <span>Shipping Fee</span>
@@ -120,7 +106,7 @@ const CartPage: React.FC = () => {
           </div>
           <div className="flex justify-between text-lg font-semibold mt-4">
             <span>Total</span>
-            <span className="text-cBlue">${totalAmount}</span>
+            <span className="text-cBlue">${totalAmount.toFixed(2)}</span>
           </div>
           <button className="w-full mt-6 bg-cBlue text-white py-2 rounded-lg hover:bg-customBlue transition">
             Proceed to Checkout ({cart.length})
