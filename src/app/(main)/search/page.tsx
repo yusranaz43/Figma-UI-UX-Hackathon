@@ -4,11 +4,19 @@ import { client } from "@/sanity/lib/client";
 import { useSearchParams, useRouter } from "next/navigation";
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
+<<<<<<< HEAD
 import Link from "next/link"; // Import Link for navigation
 
 // Sanity image URL builder
 const builder = imageUrlBuilder(client);
 const urlFor = (source: string) => builder.image(source).url();
+=======
+import Link from "next/link";  
+
+// Sanity image URL builder
+const builder = imageUrlBuilder(client);
+const urlFor = (source: string) => builder.image(source).url(); 
+>>>>>>> a68ceaf9e8e1b1d5309133bb886ed1afab233198
 
 // Product type definition
 interface Product {
@@ -19,7 +27,11 @@ interface Product {
   discountedPrice: number;
   description?: string;
   rating?: number;
+<<<<<<< HEAD
   slug: { current: string };
+=======
+  slug: { current: string }; 
+>>>>>>> a68ceaf9e8e1b1d5309133bb886ed1afab233198
 }
 
 // Function to fetch products
