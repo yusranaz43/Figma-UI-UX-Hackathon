@@ -4,11 +4,11 @@ import { client } from "@/sanity/lib/client";
 import { useSearchParams, useRouter } from "next/navigation";
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
-import Link from "next/link";  // Import Link for navigation
+import Link from "next/link";  
 
 // Sanity image URL builder
 const builder = imageUrlBuilder(client);
-const urlFor = (source: string) => builder.image(source).url(); // Removed .width() and .height() here
+const urlFor = (source: string) => builder.image(source).url(); 
 
 // Product type definition
 interface Product {
@@ -19,7 +19,7 @@ interface Product {
   discountedPrice: number;
   description?: string;
   rating?: number;
-  slug: { current: string }; // Add slug for URL
+  slug: { current: string }; 
 }
 
 // API call to fetch products
